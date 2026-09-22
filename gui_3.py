@@ -72,7 +72,7 @@ class Application:
 
         # Panel 1: Present Roster
         tk.Label(
-            self.frame2, text="Present", font=("Arial", 12, "bold"), anchor="w"
+            self.frame2, text="Attendance", font=("Arial", 12, "bold"), anchor="w"
         ).grid(row=0, column=0, sticky="ew", padx=10, pady=(10, 2))
         self.scrollframe1 = ScrollableFrame(self.frame2)
         self.scrollframe1.grid(
