@@ -75,7 +75,7 @@ class Application:
 
         # Section 1: Present Panel
         self.w_label1 = tk.Label(
-            self.frame2, text="Present", font=("Arial", 12, "bold"), anchor="w"
+            self.frame2, text="Attendance", font=("Arial", 12, "bold"), anchor="w"
         )
         self.w_label1.grid(row=0, column=0, sticky="ew", padx=10, pady=(10, 2))
 
