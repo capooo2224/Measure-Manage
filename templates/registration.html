@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>  
+<head>
+    <title>Registration & Section Management</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Registration Form</h2>
+
+        <!-- Student Registration Form -->
+        <form action="/register" method="post" enctype="multipart/form-data">
+            <label for="LastName">Last Name:</label>
+            <input type="text" id="LastName" name="LastName" required>
+
+            <label for="FirstName">First Name:</label>
+            <input type="text" id="FirstName" name="FirstName" required>
+
+            <label for="StudentNumber">Student Number:</label>
+            <input type="text" id="StudentNumber" name="StudentNumber" required>
+
+            <label for="Section">Section (Folder):</label>
+            <select name="Section" id="Section" required>
+                {% for folder in folders %}
+                    <option value="{{ folder }}">{{ folder }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="ImageType">Image Type:</label>
+            <select name="ImageType" id="ImageType">
+                <option value="glasses">Glasses</option>
+                <option value="messy">Messy</option>
+                <option value="mask">Mask</option>
+                <option value="accessories">Accessories</option>
+                <option value="normal">Normal</option>
+            </select>
+
+            <label for="Image">Image:</label>
+            <input type="file" id="Image" name="Image" accept="image/*" required>
+
+            <input type="submit" value="Register Student">
+        </form>
+
+        <hr>
+
+        <!-- Folder Management Section -->
+        <h2>Section & CSV Management</h2>
+
+        <!-- Add New Folder -->
+        <form action="/add_folder" method="post" class="inline-form">
+            <label for="new_folder">Add New Section Folder:</label>
+            <input type="text" id="new_folder" name="folder_name" placeholder="e.g., Section_D" required>
+            <input type="submit" value="Create Folder">
+        </form>
+
+        <!-- Rename Existing Folder -->
+        <form action="/rename_folder" method="post" class="inline-form">
+            <label for="old_folder">Rename Folder:</label>
+            <select name="old_folder_name" id="old_folder" required>
+                {% for folder in folders %}
+                    <option value="{{ folder }}">{{ folder }}</option>
+                {% endfor %}
+            </select>
+            <input type="text" name="new_folder_name" placeholder="New Folder Name" required>
+            <input type="submit" value="Rename">
+        </form>
+
+        <!-- Extract CSV File -->
+        <form action="/export_csv" method="get" class="inline-form">
+            <label for="csv_folder">Extract CSV Attendance:</label>
+            <select name="folder_name" id="csv_folder" required>
+                {% for folder in folders %}
+                    <option value="{{ folder }}">{{ folder }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Download CSV">
+        </form>
+    </div>
+</body>
+</html>
