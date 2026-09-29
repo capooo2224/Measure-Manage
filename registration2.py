@@ -1,5 +1,4 @@
 import os
-import csv
 import cv2
 import flask
 import numpy as np
