@@ -9,14 +9,12 @@ app = flask.Flask(__name__)
 EXPECTED_FACES_DIR = os.path.join(app.root_path, 'Expected_faces_db')
 os.makedirs(EXPECTED_FACES_DIR, exist_ok=True)
 
-
 def get_subfolders():
     """Dynamically fetch all folder names inside Expected_faces_db."""
     return [
         d for d in os.listdir(EXPECTED_FACES_DIR)
         if os.path.isdir(os.path.join(EXPECTED_FACES_DIR, d)) and not d.startswith('.')
     ]
-
 
 @app.route('/', methods=['GET'])
 def registration_form():
@@ -43,7 +41,7 @@ def register():
     if image_array is None:
         return 'The uploaded file is not a valid image.', 400
 
-    student_name = f"{first_name}{last_name}"
+    student_name = f"{last_name}, {first_name}"
     filename = f"{student_number}_{student_name}.jpg"
     
     section_dir = os.path.join(EXPECTED_FACES_DIR, section)
@@ -54,7 +52,6 @@ def register():
         return 'Could not save image.', 500
 
     return flask.redirect(flask.url_for('registration_form'))
-
 
 @app.route('/add_folder', methods=['POST'])
 def add_folder():
@@ -78,41 +75,8 @@ def rename_folder():
 
     return flask.redirect(flask.url_for('registration_form'))
 
-
-@app.route('/export_csv', methods=['GET'])
-def export_csv():
-    folder_name = flask.request.args.get('folder_name', '').strip()
-    folder_path = os.path.join(EXPECTED_FACES_DIR, folder_name)
-
-    if not os.path.exists(folder_path):
-        return "Section folder not found.", 404
-
-    # Check for existing CSV in folder or generate one from registered images
-    csv_files = [f for f in os.listdir(folder_path) if f.endswith('.csv')]
-    
-    if csv_files:
-        # Return the latest recorded CSV file
-        latest_csv = sorted(csv_files)[-1]
-        return flask.send_from_directory(folder_path, latest_csv, as_attachment=True)
-
-    # Generate a temporary student list CSV if no log exists
-    csv_path = os.path.join(folder_path, f"{folder_name}_roster.csv")
-    with open(csv_path, mode='w', newline='', encoding='utf-8') as f:
-        writer = csv.writer(f)
-        writer.writerow(['Student ID', 'Name', 'Filename'])
-        for fname in os.listdir(folder_path):
-            if fname.lower().endswith(('.jpg', '.jpeg', '.png')):
-                parts = fname.rsplit('.', 1)[0].split('_')
-                sid = parts[0] if len(parts) > 0 else 'N/A'
-                name = parts[1] if len(parts) > 1 else 'N/A'
-                writer.writerow([sid, name, fname])
-
-    return flask.send_from_directory(folder_path, f"{folder_name}_roster.csv", as_attachment=True)
-
-
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg'}
-
 
 if __name__ == '__main__':
     app.run(debug=True)

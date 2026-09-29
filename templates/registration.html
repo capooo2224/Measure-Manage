@@ -26,15 +26,6 @@
                 {% endfor %}
             </select>
 
-            <label for="ImageType">Image Type:</label>
-            <select name="ImageType" id="ImageType">
-                <option value="glasses">Glasses</option>
-                <option value="messy">Messy</option>
-                <option value="mask">Mask</option>
-                <option value="accessories">Accessories</option>
-                <option value="normal">Normal</option>
-            </select>
-
             <label for="Image">Image:</label>
             <input type="file" id="Image" name="Image" accept="image/*" required>
 
@@ -65,16 +56,6 @@
             <input type="submit" value="Rename">
         </form>
 
-        <!-- Extract CSV File -->
-        <form action="/export_csv" method="get" class="inline-form">
-            <label for="csv_folder">Extract CSV Attendance:</label>
-            <select name="folder_name" id="csv_folder" required>
-                {% for folder in folders %}
-                    <option value="{{ folder }}">{{ folder }}</option>
-                {% endfor %}
-            </select>
-            <input type="submit" value="Download CSV">
-        </form>
     </div>
 </body>
 </html>
